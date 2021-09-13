@@ -1,0 +1,33 @@
+authorName: Group 16
+experimentName: CIFAR10 HPO+NAS
+trialConcurrency: 1
+maxExecDuration: 10h
+maxTrialNum: 100
+#choice: local, remote, pai
+trainingServicePlatform: local
+#localConfig:
+#  gpuIndices: '0'
+searchSpacePath: search_space_nni.json
+#choice: true, false
+useAnnotation: false
+tuner:
+  #choice: TPE, Random, Anneal, Evolution, BatchTuner, MetisTuner, GPTuner
+  #SMAC (SMAC should be installed through nnictl)
+  builtinTunerName: TPE
+  classArgs:
+    #choice: maximize, minimize
+    optimize_mode: maximize
+assessor:
+  #choice: Medianstop, Curvefitting
+  builtinAssessorName: Curvefitting
+  classArgs:
+    epoch_num: 50
+    #choice: maximize, minimize
+    optimize_mode: maximize
+    start_step: 6
+    threshold: 0.95
+    gap: 1
+trial:
+  command: python main_nas.py --epochs 50 --num_workers 8
+  codeDir: .
+  gpuNum: 1
